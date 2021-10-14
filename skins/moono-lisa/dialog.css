@@ -515,7 +515,6 @@ textarea.cke_dialog_ui_input_textarea
 	padding: 4px 6px;
 	outline: none;
 	width: 100%;
-	*width: 95%;
 
 	box-sizing: border-box;
 
@@ -592,8 +591,6 @@ The buttons used in the dialog footer or inside the contents.
 a.cke_dialog_ui_button
 {
 	display: inline-block;
-	*display: inline;
-	*zoom: 1;
 
 	padding: 4px 1px;
 	margin: 0;
