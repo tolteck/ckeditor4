@@ -61,12 +61,8 @@ var CKBUILDER_CONFIG = {
 		undo: 1,
 	},
 	languages : {
-		'de': 1,
 		'en': 1,
 		'es': 1,
 		'fr': 1,
-		'it': 1,
-		'pt': 1,
-		'ru': 1,
 	}
 };
