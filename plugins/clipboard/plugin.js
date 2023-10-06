@@ -1545,7 +1545,7 @@
 					dragRange = clipboard.dragRange;
 
 				// Do nothing if it was not possible to get drop range.
-				if ( !dropRange ) {
+				if ( !dropRange || !dragRange ) {
 					return;
 				}
 
