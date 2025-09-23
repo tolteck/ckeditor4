@@ -129,10 +129,10 @@
 
 					if ( config.entities_greek )
 						selectedEntities.push( greek );
-
-					if ( config.entities_additional )
-						selectedEntities.push( config.entities_additional );
 				}
+
+				if ( config.entities_additional )
+					selectedEntities.push( config.entities_additional );
 
 				var entitiesTable = buildTable( selectedEntities.join( ',' ) );
 
@@ -236,7 +236,7 @@ CKEDITOR.config.entities_greek = true;
  *
  *		config.entities_additional = '#1049'; // Adds Cyrillic capital letter Short I (Й).
  *
- * @cfg {String} [entities_additional='#39' (The single quote (') character)]
+ * @cfg {String} [entities_additional='']
  * @member CKEDITOR.config
  */
-CKEDITOR.config.entities_additional = '#39';
+CKEDITOR.config.entities_additional = '';
