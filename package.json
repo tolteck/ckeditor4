@@ -1,6 +1,6 @@
 {
 	"name": "ckeditor4-dev",
-	"version": "4.16.0-tolteck.13",
+	"version": "0.0.1-tolteck.test",
 	"description": "The development version of CKEditor - JavaScript WYSIWYG web text editor.",
 	"devDependencies": {
 		"benderjs": "^0.4.6",
