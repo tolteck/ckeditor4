@@ -25,12 +25,21 @@ steps:
       - yum -y install git
       - dev/builder/build.sh
 
-  - name: github release
+  - name: create draft release
     image: plugins/github-release
     settings:
+      draft: true
       files: dev/builder/release/ckeditor_${DRONE_TAG}.tar.gz
       checksum:
         - sha256
+      api_key:
+        from_secret: github_token
+    when:
+      event: tag
+
+  - name: publish release
+    image: plugins/github-release
+    settings:
       api_key:
         from_secret: github_token
     when:
