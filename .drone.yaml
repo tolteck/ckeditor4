@@ -1,38 +1,52 @@
 ---
 
-clone:
-  git:
-    image: plugins/git
-    tags: true
+kind: pipeline
+type: docker
 
-pipeline:
-  restore-cache:
+steps:
+  - name: fetch git tags
+    image: alpine/git
+    commands:
+      - git fetch --tags
+
+  - name: restore cache
     image: drillster/drone-volume-cache
-    restore: true
-    mount:
-      - dev/builder/ckbuilder
     volumes:  # mount the cache volume, needs "Trusted"
-      - /tmp/cache:/cache
+      - name: cache
+        path: /cache
+    settings:
+      restore: true
+      mount:
+        - dev/builder/ckbuilder
 
-  tests:
+  - name: tests
     image: openjdk:12
     commands:
       - yum -y install git
       - dev/builder/build.sh
 
-  github_release:
+  - name: github release
     image: plugins/github-release
-    files: dev/builder/release/ckeditor_${DRONE_TAG}.tar.gz
-    secrets: [github_token]
-    checksum:
-      - sha256
+    settings:
+      files: dev/builder/release/ckeditor_${DRONE_TAG}.tar.gz
+      checksum:
+        - sha256
+      api_key:
+        from_secret: github_token
     when:
       event: tag
 
-  rebuild-cache:
+  - name: rebuild cache
     image: drillster/drone-volume-cache
-    rebuild: true
-    mount:
-      - dev/builder/ckbuilder
     volumes:  # mount the cache volume, needs "Trusted"
-      - /tmp/cache:/cache
+      - name: cache
+        path: /cache
+    settings:
+      rebuild: true
+      mount:
+        - dev/builder/ckbuilder
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
