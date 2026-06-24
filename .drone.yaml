@@ -37,6 +37,35 @@ steps:
     when:
       event: tag
 
+  # If this step fails while creating a new release, then manually delete the
+  # draft release on Github before relaunching the release job on the CI.
+  - name: wait for draft release
+    image: tolteck/base
+    commands:
+      - |
+          RELEASE_URL="https://api.github.com/repos/tolteck/ckeditor4/releases"
+          DELAY=2
+          for i in 1 2 3; do
+            releases=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \\
+                       "$RELEASE_URL?per_page=10")
+            if echo "$releases" | grep -qF '"tag_name": "'"$DRONE_TAG"'"'; then
+              exit 0
+            fi
+            echo "Release for tag ${DRONE_TAG} still not visible," \\
+                 "waiting $DELAY seconds..."
+            sleep "$DELAY"
+            DELAY=$((DELAY * 2))
+          done
+          echo "Release not found for tag ${DRONE_TAG}, aborting." \\
+               "This can be caused by" \\
+               "https://github.com/tolteck/coatl/pull/1420#discussion_r3458730327"
+          exit 1
+    environment:
+      GITHUB_TOKEN:
+        from_secret: github_token
+    when:
+      event: tag
+
   - name: publish release
     image: plugins/github-release
     settings:
