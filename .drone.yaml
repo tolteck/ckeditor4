@@ -20,9 +20,9 @@ steps:
         - dev/builder/ckbuilder
 
   - name: tests
-    image: openjdk:12
+    image: eclipse-temurin:17-jdk
     commands:
-      - yum -y install git
+      - apt-get update && apt-get -y install git
       - dev/builder/build.sh
 
   - name: create draft release
